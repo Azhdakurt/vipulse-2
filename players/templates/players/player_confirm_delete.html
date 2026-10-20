@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>Delete Player | VIPulse 2.0</title>
+</head>
+<body>
+    <h1>VIPulse 2.0</h1>
+
+    <h2>Delete Player</h2>
+
+    <p>
+        Are you sure you want to delete
+        <strong>{{ player.username }}</strong>?
+    </p>
+
+    <p>Player ID: {{ player.player_id }}</p>
+
+    <p>This action cannot be undone.</p>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <button type="submit">
+            Yes, Delete Player
+        </button>
+    </form>
+
+    <a href="{% url 'player_list' %}">
+        Cancel
+    </a>
+</body>
+</html>
