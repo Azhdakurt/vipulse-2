@@ -1,10 +1,11 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
 from .models import Player, Review
 from .forms import PlayerForm, ReviewForm
 
-
+@login_required
 def player_list(request):
     players = Player.objects.all().order_by("-created_at")
 
@@ -14,7 +15,7 @@ def player_list(request):
         {"players": players}
     )
 
-
+@login_required
 def player_create(request):
     if request.method == "POST":
         form = PlayerForm(request.POST)
@@ -34,6 +35,7 @@ def player_create(request):
         "players/player_form.html",
         {"form": form}
     )
+@login_required
 def player_update(request, pk):
     player = get_object_or_404(Player, pk=pk)
 
@@ -55,6 +57,7 @@ def player_update(request, pk):
         "players/player_form.html",
         {"form": form}
     )
+@login_required
 def player_delete(request, pk):
     player = get_object_or_404(Player, pk=pk)
 
@@ -71,6 +74,7 @@ def player_delete(request, pk):
         "players/player_confirm_delete.html",
         {"player": player}
     )
+@login_required
 def review_list(request):
     reviews = Review.objects.select_related(
         "player"
@@ -81,6 +85,7 @@ def review_list(request):
         "players/review_list.html",
         {"reviews": reviews}
     )
+@login_required
 def review_create(request):
     if request.method == "POST":
         form = ReviewForm(request.POST)
@@ -100,6 +105,7 @@ def review_create(request):
         "players/review_form.html",
         {"form": form}
     )
+@login_required
 def review_update(request, pk):
     review = get_object_or_404(Review, pk=pk)
 
@@ -121,6 +127,7 @@ def review_update(request, pk):
         "players/review_form.html",
         {"form": form}
     )
+@login_required
 def review_delete(request, pk):
     review = get_object_or_404(Review, pk=pk)
 
