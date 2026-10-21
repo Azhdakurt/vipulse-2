@@ -8,6 +8,10 @@
 </head>
 <body>
     <h1>VIPulse 2.0</h1>
+    <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Log Out</button>
+</form>
     <h2>VIP Reviews</h2>
 
     <a href="{% url 'player_list' %}">
