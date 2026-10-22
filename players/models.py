@@ -21,6 +21,8 @@ class Player(models.Model):
 
     def __str__(self):
         return f"{self.username} ({self.player_id})"
+
+
 class Review(models.Model):
     RISK_LEVELS = [
         ("low", "Low"),
