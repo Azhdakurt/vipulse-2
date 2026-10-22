@@ -18,6 +18,8 @@ class PlayerForm(forms.ModelForm):
                 attrs={"class": "form-select"}
             ),
         }
+
+
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review

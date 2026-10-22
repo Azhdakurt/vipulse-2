@@ -6,6 +6,7 @@ from django.db.models import Q
 from .models import Player, Review
 from .forms import PlayerForm, ReviewForm
 
+
 @login_required
 def player_list(request):
     query = request.GET.get("q", "").strip()
@@ -27,6 +28,7 @@ def player_list(request):
         }
     )
 
+
 @login_required
 def player_create(request):
     if request.method == "POST":
@@ -47,6 +49,8 @@ def player_create(request):
         "players/player_form.html",
         {"form": form}
     )
+
+
 @login_required
 def player_update(request, pk):
     player = get_object_or_404(Player, pk=pk)
@@ -69,6 +73,8 @@ def player_update(request, pk):
         "players/player_form.html",
         {"form": form}
     )
+
+
 @login_required
 def player_delete(request, pk):
     player = get_object_or_404(Player, pk=pk)
@@ -86,6 +92,8 @@ def player_delete(request, pk):
         "players/player_confirm_delete.html",
         {"player": player}
     )
+
+
 @login_required
 def review_list(request):
     reviews = Review.objects.select_related(
@@ -97,6 +105,8 @@ def review_list(request):
         "players/review_list.html",
         {"reviews": reviews}
     )
+
+
 @login_required
 def review_create(request):
     if request.method == "POST":
@@ -117,6 +127,8 @@ def review_create(request):
         "players/review_form.html",
         {"form": form}
     )
+
+
 @login_required
 def review_update(request, pk):
     review = get_object_or_404(Review, pk=pk)
@@ -139,6 +151,8 @@ def review_update(request, pk):
         "players/review_form.html",
         {"form": form}
     )
+
+
 @login_required
 def review_delete(request, pk):
     review = get_object_or_404(Review, pk=pk)
