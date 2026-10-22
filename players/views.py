@@ -1,18 +1,30 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.db.models import Q
 
 from .models import Player, Review
 from .forms import PlayerForm, ReviewForm
 
 @login_required
 def player_list(request):
+    query = request.GET.get("q", "").strip()
+
     players = Player.objects.all().order_by("-created_at")
+
+    if query:
+        players = players.filter(
+            Q(username__icontains=query) |
+            Q(player_id__icontains=query)
+        )
 
     return render(
         request,
         "players/player_list.html",
-        {"players": players}
+        {
+            "players": players,
+            "query": query,
+        }
     )
 
 @login_required
