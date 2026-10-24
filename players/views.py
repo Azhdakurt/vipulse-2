@@ -10,8 +10,13 @@ from .forms import PlayerForm, ReviewForm
 @login_required
 def player_list(request):
     query = request.GET.get("q", "").strip()
+    vip_tier = request.GET.get("vip_tier", "").strip()
 
     players = Player.objects.all().order_by("-created_at")
+    valid_tiers = [tier[0] for tier in Player.VIP_TIERS]
+
+    if vip_tier in valid_tiers:
+        players = players.filter(vip_tier=vip_tier)
 
     if query:
         players = players.filter(
@@ -25,6 +30,7 @@ def player_list(request):
         {
             "players": players,
             "query": query,
+            "vip_tier": vip_tier,
         }
     )
 
