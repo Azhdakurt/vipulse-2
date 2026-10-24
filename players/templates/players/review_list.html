@@ -1,17 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-    <title>VIP Reviews | VIPulse 2.0</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}VIP Reviews | VIPulse 2.0{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
     <h1>VIPulse 2.0</h1>
+
     <form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Log Out</button>
-</form>
+        {% csrf_token %}
+        <button type="submit">Log Out</button>
+    </form>
+
     <h2>VIP Reviews</h2>
 
     <a href="{% url 'player_list' %}">
@@ -51,17 +51,20 @@
                 Review Date:
                 {{ review.created_at|date:"d M Y" }}
             </p>
+
             <a href="{% url 'review_update' review.pk %}">
-    Edit Review
-</a>
-<a href="{% url 'review_delete' review.pk %}">
-    Delete Review
-</a>
+                Edit Review
+            </a>
+
+            <a href="{% url 'review_delete' review.pk %}">
+                Delete Review
+            </a>
         </div>
 
         <hr>
     {% empty %}
         <p>No VIP reviews have been added yet.</p>
     {% endfor %}
-</body>
-</html>
+
+</div>
+{% endblock %}
