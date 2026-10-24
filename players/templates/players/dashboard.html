@@ -1,20 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIPulse | Dashboard</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}VIPulse | Dashboard{% endblock %}
+
+{% block content %}
+
     <h1>VIPulse Dashboard</h1>
     <p>Welcome to your VIP management dashboard!</p>
+
     <h2>Total Players</h2>
-<p>{{ total_players }}</p>
-<h2>Total Reviews</h2>
-<p>{{ total_reviews }}</p>
-<h2>High-Risk Players</h2>
-<p>{{ high_risk_players }}</p>
-<h2>Average Retention Score</h2>
-<p>{{ average_retention_score|floatformat:1 }}/100</p>
-</body>
-</html>
+    <p>{{ total_players }}</p>
+
+    <h2>Total Reviews</h2>
+    <p>{{ total_reviews }}</p>
+
+    <h2>High-Risk Players</h2>
+    <p>{{ high_risk_players }}</p>
+
+    <h2>Average Retention Score</h2>
+    <p>{{ average_retention_score|floatformat:1 }}/100</p>
+
+{% endblock %}
