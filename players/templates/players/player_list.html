@@ -1,48 +1,50 @@
+{% extends "base.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-    <title>VIPulse 2.0 | Players</title>
-</head>
-<body>
+{% block title %}VIPulse 2.0 | Players{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
     <h1>VIPulse 2.0 - Player Management</h1>
-<form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Log Out</button>
-</form>
-    <h2>VIP Players</h2>
-    <form method="get" action="{% url 'player_list' %}">
-    <input
-        type="text"
-        name="q"
-        placeholder="Search by username or Player ID"
-        value="{{ query }}"
-    >
-    <label for="vip_tier">VIP Tier:</label>
 
-<select name="vip_tier" id="vip_tier">
-    <option value="">All VIP Tiers</option>
-    <option value="bronze" {% if vip_tier == "bronze" %}selected{% endif %}>
-    Bronze
-</option>
-    <option value="silver" {% if vip_tier == "silver" %}selected{% endif %}>
-    Silver
-</option>
-    <option value="gold" {% if vip_tier == "gold" %}selected{% endif %}>
-    Gold
-</option>
-    <option value="platinum" {% if vip_tier == "platinum" %}selected{% endif %}>
-    Platinum
-</option>
-    <option value="diamond" {% if vip_tier == "diamond" %}selected{% endif %}>
-    Diamond
-</option>
-</select>
-    <button type="submit">Search</button>
-</form>
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Log Out</button>
+    </form>
+
+    <h2>VIP Players</h2>
+
+    <form method="get" action="{% url 'player_list' %}">
+        <input
+            type="text"
+            name="q"
+            placeholder="Search by username or Player ID"
+            value="{{ query }}"
+        >
+
+        <label for="vip_tier">VIP Tier:</label>
+
+        <select name="vip_tier" id="vip_tier">
+            <option value="">All VIP Tiers</option>
+            <option value="bronze" {% if vip_tier == "bronze" %}selected{% endif %}>
+                Bronze
+            </option>
+            <option value="silver" {% if vip_tier == "silver" %}selected{% endif %}>
+                Silver
+            </option>
+            <option value="gold" {% if vip_tier == "gold" %}selected{% endif %}>
+                Gold
+            </option>
+            <option value="platinum" {% if vip_tier == "platinum" %}selected{% endif %}>
+                Platinum
+            </option>
+            <option value="diamond" {% if vip_tier == "diamond" %}selected{% endif %}>
+                Diamond
+            </option>
+        </select>
+
+        <button type="submit">Search</button>
+    </form>
 
     <a href="{% url 'player_create' %}">
         + Add New Player
@@ -59,17 +61,19 @@
             <a href="{% url 'player_update' player.pk %}">
                 Edit Player
             </a>
+
             <a href="{% url 'player_delete' player.pk %}">
-    Delete Player
-</a>
+                Delete Player
+            </a>
         </div>
         <hr>
     {% empty %}
-    {% if query %}
-        <p>No players found matching "{{ query }}".</p>
-    {% else %}
-        <p>No players have been added yet.</p>
-    {% endif %}
-{% endfor %}
-</body>
-</html>
+        {% if query %}
+            <p>No players found matching "{{ query }}".</p>
+        {% else %}
+            <p>No players have been added yet.</p>
+        {% endif %}
+    {% endfor %}
+
+</div>
+{% endblock %}
