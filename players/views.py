@@ -176,10 +176,17 @@ def review_delete(request, pk):
 def dashboard(request):
     total_players = Player.objects.count()
     total_reviews = Review.objects.count()
+    high_risk_players = (
+     Review.objects.filter(risk_level="high")
+     .values("player")
+     .distinct()
+     .count()
+    )
 
     context = {
         "total_players": total_players,
         "total_reviews": total_reviews,
+        "high_risk_players": high_risk_players,
     }
 
     return render(request, "players/dashboard.html", context)
