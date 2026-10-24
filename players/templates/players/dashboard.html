@@ -3,20 +3,51 @@
 {% block title %}VIPulse | Dashboard{% endblock %}
 
 {% block content %}
+<div class="container py-5">
 
     <h1>VIPulse Dashboard</h1>
     <p>Welcome to your VIP management dashboard!</p>
+    <div class="row g-4">
 
-    <h2>Total Players</h2>
-    <p>{{ total_players }}</p>
+  <div class="col-12 col-md-6 col-xl-3">
+    <div class="card shadow-sm h-100">
+        <div class="card-body">
+            <h5 class="card-title text-muted">Total Players</h5>
+            <h2 class="card-text fw-bold">{{ total_players }}</h2>
+        </div>
+    </div>
+</div>
 
-    <h2>Total Reviews</h2>
-    <p>{{ total_reviews }}</p>
+  <div class="col-12 col-md-6 col-xl-3">
+    <div class="card shadow-sm h-100">
+        <div class="card-body">
+            <h5 class="card-title text-muted">Total Reviews</h5>
+            <h2 class="card-text fw-bold">{{ total_reviews }}</h2>
+        </div>
+    </div>
+</div>
 
-    <h2>High-Risk Players</h2>
-    <p>{{ high_risk_players }}</p>
+  <div class="col-12 col-md-6 col-xl-3">
+    <div class="card shadow-sm h-100">
+        <div class="card-body">
+            <h5 class="card-title text-muted">High-Risk Players</h5>
+            <h2 class="card-text fw-bold text-danger">
+                {{ high_risk_players }}
+            </h2>
+        </div>
+    </div>
+</div>
 
-    <h2>Average Retention Score</h2>
-    <p>{{ average_retention_score|floatformat:1 }}/100</p>
-
+ <div class="col-12 col-md-6 col-xl-3">
+    <div class="card shadow-sm h-100">
+        <div class="card-body">
+            <h5 class="card-title text-muted">Average Retention Score</h5>
+            <h2 class="card-text fw-bold text-success">
+                {{ average_retention_score|floatformat:1 }}/100
+            </h2>
+        </div>
+    </div>
+</div>
+</div>
+</div>
 {% endblock %}
