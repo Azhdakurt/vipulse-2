@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.db.models import Q
+from django.db.models import Avg, Q
 
 from .models import Player, Review
 from .forms import PlayerForm, ReviewForm
@@ -182,11 +182,14 @@ def dashboard(request):
      .distinct()
      .count()
     )
-
+    average_retention_score = Review.objects.aggregate(
+        Avg("retention_score")
+    )["retention_score__avg"] or 0
     context = {
         "total_players": total_players,
         "total_reviews": total_reviews,
         "high_risk_players": high_risk_players,
+        "average_retention_score": average_retention_score,
     }
 
     return render(request, "players/dashboard.html", context)
