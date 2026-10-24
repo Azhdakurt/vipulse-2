@@ -170,3 +170,8 @@ def review_delete(request, pk):
         "players/review_confirm_delete.html",
         {"review": review}
     )
+
+
+@login_required
+def dashboard(request):
+    return render(request, "players/dashboard.html")
