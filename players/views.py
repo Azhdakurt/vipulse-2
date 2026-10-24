@@ -174,4 +174,10 @@ def review_delete(request, pk):
 
 @login_required
 def dashboard(request):
-    return render(request, "players/dashboard.html")
+    total_players = Player.objects.count()
+
+    context = {
+        "total_players": total_players,
+    }
+
+    return render(request, "players/dashboard.html", context)
