@@ -28,6 +28,14 @@
     Reviews
 </a>
 </div>
+
+        <form method="post" action="{% url 'logout' %}" class="ms-auto">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-light">
+                Log Out
+            </button>
+        </form>
+
     </div>
 </nav>
 
