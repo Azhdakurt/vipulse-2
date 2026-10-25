@@ -57,11 +57,10 @@ class ReviewForm(forms.ModelForm):
     def clean_retention_score(self):
         score = self.cleaned_data["retention_score"]
 
-        if score > 100:
+        if score < 0 or score > 100:
             raise forms.ValidationError(
-                "Retention score cannot exceed 100."
+                "Retention score must be between 0 and 100."
             )
-
         return score
 
 
