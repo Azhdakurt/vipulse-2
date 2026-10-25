@@ -5,10 +5,12 @@
 {% block content %}
 <div class="container py-5">
 
-    <h1>VIPulse 2.0</h1>
-
-
-    <h2>VIP Reviews</h2>
+    <div class="mb-4">
+        <h1 class="fw-bold mb-2">📋 VIP Reviews Management</h1>
+        <p class="text-muted mb-0">
+            Monitor player risk levels, retention scores and recommended actions.
+        </p>
+    </div>
 
     <a href="{% url 'player_list' %}">
         Back to Players
@@ -17,22 +19,51 @@
     <hr>
 
     {% for review in reviews %}
-        <div>
-            <h3>{{ review.player.username }}</h3>
+        <div class="card shadow-sm border-0 mb-3 p-4">
+            <h3 class="h5 fw-bold mb-3">
+    👤 {{ review.player.username }}
+</h3>
 
             <p>
                 Player ID: {{ review.player.player_id }}
             </p>
 
             <p>
-                Risk Level:
-                {{ review.get_risk_level_display }}
-            </p>
+    <span class="text-muted">Risk Level:</span>
 
-            <p>
-                Retention Score:
-                {{ review.retention_score }}/100
-            </p>
+    <span class="badge
+        {% if review.risk_level == 'low' %}
+            bg-success
+        {% elif review.risk_level == 'medium' %}
+            bg-warning text-dark
+        {% elif review.risk_level == 'high' %}
+            bg-danger
+        {% else %}
+            bg-secondary
+        {% endif %}
+    ">
+        {{ review.get_risk_level_display }}
+    </span>
+</p>
+
+            <div class="mb-3">
+    <p class="mb-2">
+        <span class="text-muted">Retention Score:</span>
+        <span class="fw-semibold">{{ review.retention_score }}/100</span>
+    </p>
+
+ <div class="progress"
+     role="progressbar"
+     aria-label="Retention Score"
+     aria-valuenow="{{ review.retention_score }}"
+     aria-valuemin="0"
+     aria-valuemax="100">
+
+    <div class="progress-bar"
+         data-score="{{ review.retention_score }}">
+    </div>
+</div>
+</div>
 
             <p>
                 Notes: {{ review.notes }}
@@ -48,19 +79,37 @@
                 {{ review.created_at|date:"d M Y" }}
             </p>
 
-            <a href="{% url 'review_update' review.pk %}">
-                Edit Review
-            </a>
+          <div class="d-flex gap-2 mt-3">
+    <a href="{% url 'review_update' review.pk %}"
+       class="btn btn-outline-primary btn-sm">
+        ✏️ Edit Review
+    </a>
 
-            <a href="{% url 'review_delete' review.pk %}">
-                Delete Review
-            </a>
+    <a href="{% url 'review_delete' review.pk %}"
+       class="btn btn-outline-danger btn-sm">
+        🗑️ Delete Review
+    </a>
+</div>
         </div>
 
-        <hr>
     {% empty %}
         <p>No VIP reviews have been added yet.</p>
     {% endfor %}
 
 </div>
+<script>
+    document.querySelectorAll(".progress-bar[data-score]").forEach(function (bar) {
+        const score = Number(bar.dataset.score);
+        const safeScore = Math.max(0, Math.min(100, score || 0));
+
+        bar.style.width = safeScore + "%";
+        if (safeScore >= 70) {
+    bar.classList.add("bg-success");
+} else if (safeScore >= 40) {
+    bar.classList.add("bg-warning");
+} else {
+    bar.classList.add("bg-danger");
+}
+    });
+</script>
 {% endblock %}
