@@ -26,7 +26,7 @@
 
         <label for="vip_tier" class="text-nowrap">VIP Tier:</label>
 
-        <select name="vip_tier" id="vip_tier" class="form-select">
+        <select name="vip_tier" id="vip_tier" class="form-select w-auto">
             <option value="">All VIP Tiers</option>
             <option value="bronze" {% if vip_tier == "bronze" %}selected{% endif %}>
                 Bronze
@@ -45,12 +45,14 @@
             </option>
         </select>
 
-        <button type="submit">Search</button>
+        <button type="submit" class="btn btn-primary px-4 text-nowrap">
+    🔎 Search
+</button>
     </form>
 
-    <a href="{% url 'player_create' %}">
-        + Add New Player
-    </a>
+   <a href="{% url 'player_create' %}" class="btn btn-success mb-3">
+    + Add New Player
+</a>
 
     <hr>
 
