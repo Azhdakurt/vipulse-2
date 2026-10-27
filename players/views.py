@@ -191,11 +191,17 @@ def dashboard(request):
     average_retention_score = Review.objects.aggregate(
         Avg("retention_score")
     )["retention_score__avg"] or 0
+    recent_reviews = (
+        Review.objects
+        .select_related("player")
+        .order_by("-created_at")[:5]
+    )
     context = {
         "total_players": total_players,
         "total_reviews": total_reviews,
         "high_risk_players": high_risk_players,
         "average_retention_score": average_retention_score,
+        "recent_reviews": recent_reviews,
     }
 
     return render(request, "players/dashboard.html", context)
