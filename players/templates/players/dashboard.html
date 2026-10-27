@@ -5,8 +5,18 @@
 {% block content %}
 <div class="container py-5">
 
-    <h1>VIPulse Dashboard</h1>
-    <p>Welcome to your VIP management dashboard!</p>
+    <div class="mb-4">
+
+    <h1 class="fw-bold mb-2">
+        📊 VIPulse Dashboard
+    </h1>
+
+    <p class="text-muted mb-0">
+        Your central hub for monitoring VIP players,
+        reviewing risk levels and tracking retention performance.
+    </p>
+
+</div>
     <div class="row g-4">
 
   <div class="col-12 col-md-6 col-xl-3">
@@ -48,6 +58,50 @@
         </div>
     </div>
 </div>
+ </div> <!-- KPI row ends -->
+
+    <div class="mt-5">
+        <h3 class="fw-bold mb-2">
+            📋 Recent VIP Reviews
+        </h3>
+
+        <p class="text-muted">
+            Keep track of the latest VIP player assessments and recommended actions.
+        </p>
+        <div class="list-group mt-4">
+
+    {% for review in recent_reviews %}
+
+        <div class="list-group-item p-3">
+
+            <h5 class="fw-bold mb-1">
+                👤 {{ review.player.username }}
+            </h5>
+
+            <p class="text-muted mb-1">
+                Player ID: {{ review.player.player_id }}
+            </p>
+
+            <p class="mb-1">
+                Risk Level: {{ review.get_risk_level_display }}
+            </p>
+
+            <p class="mb-0">
+                Retention Score: {{ review.retention_score }}/100
+            </p>
+
+        </div>
+
+    {% empty %}
+
+        <div class="list-group-item text-muted p-3">
+            No VIP reviews have been added yet.
+        </div>
+
+    {% endfor %}
+
 </div>
-</div>
+    </div>
+
+</div> <!-- Main container ends -->
 {% endblock %}
