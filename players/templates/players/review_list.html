@@ -12,11 +12,19 @@
         </p>
     </div>
 
-    <a href="{% url 'player_list' %}">
-        Back to Players
+   <div class="d-flex justify-content-between align-items-center mb-4">
+
+    <a href="{% url 'player_list' %}"
+       class="btn btn-outline-secondary">
+        ← Back to Players
     </a>
 
-    <hr>
+    <a href="{% url 'review_create' %}"
+       class="btn btn-primary">
+        + Add New Review
+    </a>
+
+</div>
 
     {% for review in reviews %}
         <div class="card shadow-sm border-0 mb-3 p-4">
