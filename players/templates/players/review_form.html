@@ -34,8 +34,12 @@
                     <div class="d-flex gap-2 mt-4">
 
     <button type="submit" class="btn btn-primary">
+    {% if form.instance.pk %}
+        Update Review
+    {% else %}
         Save Review
-    </button>
+    {% endif %}
+</button>
 
     <a href="{% url 'review_list' %}" class="btn btn-outline-secondary">
         Cancel
