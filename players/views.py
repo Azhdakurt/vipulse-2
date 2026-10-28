@@ -106,10 +106,15 @@ def review_list(request):
         "player"
     ).order_by("-created_at")
 
+    risk_level = request.GET.get("risk_level", "").strip()
+
+    if risk_level in ["low", "medium", "high"]:
+        reviews = reviews.filter(risk_level=risk_level)
+
     return render(
         request,
         "players/review_list.html",
-        {"reviews": reviews}
+        {"reviews": reviews, "risk_level": risk_level}
     )
 
 
