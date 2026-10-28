@@ -26,7 +26,49 @@
 
 </div>
 
-    {% for review in reviews %}
+
+    <!-- Risk Level Filter -->
+<form method="get" class="mb-4">
+    <div class="row g-3 align-items-end">
+
+        <div class="col-12 col-md-4">
+            <label for="risk_level" class="form-label fw-semibold">
+                Risk Level
+            </label>
+
+            <select name="risk_level"
+                    id="risk_level"
+                    class="form-select">
+
+                <option value="">All Risk Levels</option>
+
+                <option value="low"
+                    {% if risk_level == "low" %}selected{% endif %}>
+                    Low Risk
+                </option>
+
+                <option value="medium"
+                    {% if risk_level == "medium" %}selected{% endif %}>
+                    Medium Risk
+                </option>
+
+                <option value="high"
+                    {% if risk_level == "high" %}selected{% endif %}>
+                    High Risk
+                </option>
+
+            </select>
+        </div>
+
+        <div class="col-12 col-md-auto">
+            <button type="submit" class="btn btn-primary">
+                Apply Filters
+            </button>
+        </div>
+
+    </div>
+</form>
+{% for review in reviews %}
         <div class="card shadow-sm border-0 mb-3 p-4">
             <h3 class="h5 fw-bold mb-3">
     👤 {{ review.player.username }}
@@ -101,8 +143,16 @@
         </div>
 
     {% empty %}
-        <p>No VIP reviews have been added yet.</p>
-    {% endfor %}
+    {% if risk_level %}
+        <p class="text-muted">
+            No reviews match your selected filters. Try adjusting your filters.
+        </p>
+    {% else %}
+        <p class="text-muted">
+            No VIP reviews have been added yet.
+        </p>
+    {% endif %}
+{% endfor %}
 
 </div>
 <script>
