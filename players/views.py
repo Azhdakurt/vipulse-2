@@ -111,10 +111,23 @@ def review_list(request):
     if risk_level in ["low", "medium", "high"]:
         reviews = reviews.filter(risk_level=risk_level)
 
+    retention_range = request.GET.get("retention_range", "").strip()
+
+    if retention_range == "low":
+        reviews = reviews.filter(retention_score__range=(0, 39))
+    elif retention_range == "medium":
+        reviews = reviews.filter(retention_score__range=(40, 69))
+    elif retention_range == "high":
+        reviews = reviews.filter(retention_score__range=(70, 100))
+
     return render(
         request,
         "players/review_list.html",
-        {"reviews": reviews, "risk_level": risk_level}
+        {
+            "reviews": reviews,
+            "risk_level": risk_level,
+            "retention_range": retention_range,
+        },
     )
 
 
