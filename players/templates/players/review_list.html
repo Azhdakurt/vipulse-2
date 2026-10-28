@@ -59,7 +59,35 @@
 
             </select>
         </div>
+<!-- Retention Score Filter -->
+<div class="col-12 col-md-4">
+    <label for="retention_range" class="form-label fw-semibold">
+        Retention Score
+    </label>
 
+    <select name="retention_range"
+            id="retention_range"
+            class="form-select">
+
+        <option value="">All Retention Scores</option>
+
+        <option value="low"
+            {% if retention_range == "low" %}selected{% endif %}>
+            Low Retention (0–39)
+        </option>
+
+        <option value="medium"
+            {% if retention_range == "medium" %}selected{% endif %}>
+            Medium Retention (40–69)
+        </option>
+
+        <option value="high"
+            {% if retention_range == "high" %}selected{% endif %}>
+            High Retention (70–100)
+        </option>
+
+    </select>
+</div>
         <div class="col-12 col-md-auto">
             <button type="submit" class="btn btn-primary">
                 Apply Filters
@@ -143,7 +171,7 @@
         </div>
 
     {% empty %}
-    {% if risk_level %}
+    {% if risk_level or retention_range %}
         <p class="text-muted">
             No reviews match your selected filters. Try adjusting your filters.
         </p>
