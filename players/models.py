@@ -10,7 +10,11 @@ class Player(models.Model):
         ("diamond", "Diamond"),
     ]
 
-    player_id = models.CharField(max_length=50, unique=True)
+    player_id = models.CharField(
+        max_length=50,
+        unique=True,
+        verbose_name="Player ID"
+    )
     username = models.CharField(max_length=100)
     vip_tier = models.CharField(
         max_length=20,

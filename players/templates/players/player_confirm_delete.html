@@ -1,35 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-    <title>Delete Player | VIPulse 2.0</title>
-</head>
-<body>
-    <h1>VIPulse 2.0</h1>
+{% extends 'base.html' %}
 
-    <h2>Delete Player</h2>
+{% block title %}Delete Player | VIPulse 2.0{% endblock %}
 
-    <p>
-        Are you sure you want to delete
-        <strong>{{ player.username }}</strong>?
-    </p>
+{% block content %}
 
-    <p>Player ID: {{ player.player_id }}</p>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
 
-    <p>This action cannot be undone.</p>
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4 p-md-5">
 
-    <form method="POST">
-        {% csrf_token %}
+                    <h2 class="fw-bold mb-3">
+                        Delete Player
+                    </h2>
 
-        <button type="submit">
-            Yes, Delete Player
-        </button>
-    </form>
+                    <div class="alert alert-warning" role="alert">
+                        Are you sure you want to delete
+                        <strong>{{ player.username }}</strong>?
+                    </div>
 
-    <a href="{% url 'player_list' %}">
-        Cancel
-    </a>
-</body>
-</html>
+                    <p class="text-muted mb-3">
+                        <strong>Player ID:</strong>
+                        {{ player.player_id }}
+                    </p>
+
+                    <p class="text-danger mb-4">
+                        This action cannot be undone.
+                    </p>
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <button type="submit"
+                                    class="btn btn-danger">
+                                Yes, Delete Player
+                            </button>
+
+                            <a href="{% url 'player_list' %}"
+                               class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
