@@ -41,9 +41,17 @@
     {% endif %}
 </button>
 
-    <a href="{% url 'review_list' %}" class="btn btn-outline-secondary">
+    {% if request.GET.from == "profile" and form.instance.pk %}
+    <a href="{% url 'player_detail' form.instance.player.pk %}"
+       class="btn btn-outline-secondary">
         Cancel
     </a>
+{% else %}
+    <a href="{% url 'review_list' %}"
+       class="btn btn-outline-secondary">
+        Cancel
+    </a>
+{% endif %}
 
 </div>
 

@@ -36,6 +36,32 @@ def player_list(request):
 
 
 @login_required
+def player_detail(request, pk):
+    player = get_object_or_404(Player, pk=pk)
+
+    reviews = (
+        Review.objects
+        .filter(player=player)
+        .order_by("-created_at")
+    )
+
+    latest_review = reviews.first()
+
+    context = {
+        "player": player,
+        "reviews": reviews,
+        "latest_review": latest_review,
+        "total_reviews": reviews.count(),
+    }
+
+    return render(
+        request,
+        "players/player_detail.html",
+        context,
+    )
+
+
+@login_required
 def player_create(request):
     if request.method == "POST":
         form = PlayerForm(request.POST)
@@ -166,7 +192,15 @@ def review_update(request, pk):
                 request,
                 "VIP Review updated successfully!"
             )
+
+            if request.GET.get("from") == "profile":
+                return redirect(
+                    "player_detail",
+                    pk=review.player.pk
+                )
+
             return redirect("review_list")
+
     else:
         form = ReviewForm(instance=review)
 
