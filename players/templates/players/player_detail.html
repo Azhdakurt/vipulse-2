@@ -16,37 +16,37 @@
     <div class="col-12 col-md-4">
         <div class="card h-100 shadow-sm">
             <div class="card-body">
-                <h6 class="text-muted">Total Reviews</h6>
-                <h3>{{ total_reviews }}</h3>
+                <p class="text-muted h6">Total Reviews</p>
+                <p class="h3 mb-0">{{ total_reviews }}</p>
             </div>
         </div>
     </div>
 
-    <div class="col-12 col-md-4">
-        <div class="card h-100 shadow-sm">
-            <div class="card-body">
-                <h6 class="text-muted">Latest Risk Level</h6>
-                {% if latest_review %}
-                    <h3>{{ latest_review.get_risk_level_display }}</h3>
-                {% else %}
-                    <h3>N/A</h3>
-                {% endif %}
-            </div>
+   <div class="col-12 col-md-4">
+    <div class="card h-100 shadow-sm">
+        <div class="card-body">
+            <p class="text-muted h6">Latest Risk Level</p>
+            {% if latest_review %}
+                <p class="h3 mb-0">{{ latest_review.get_risk_level_display }}</p>
+            {% else %}
+                <p class="h3 mb-0">N/A</p>
+            {% endif %}
         </div>
     </div>
+</div>
 
-    <div class="col-12 col-md-4">
-        <div class="card h-100 shadow-sm">
-            <div class="card-body">
-                <h6 class="text-muted">Latest Retention Score</h6>
-                {% if latest_review %}
-                    <h3>{{ latest_review.retention_score }}/100</h3>
-                {% else %}
-                    <h3>N/A</h3>
-                {% endif %}
-            </div>
+<div class="col-12 col-md-4">
+    <div class="card h-100 shadow-sm">
+        <div class="card-body">
+            <p class="text-muted h6">Latest Retention Score</p>
+            {% if latest_review %}
+                <p class="h3 mb-0">{{ latest_review.retention_score }}/100</p>
+            {% else %}
+                <p class="h3 mb-0">N/A</p>
+            {% endif %}
         </div>
     </div>
+</div>
 </div>
 <div class="card shadow-sm mb-4">
     <div class="card-body">
