@@ -176,3 +176,347 @@ The board can be viewed here:
 
 This approach helped organise the development process, prioritise essential functionality and track the implementation of the application's 14 user stories.
 
+
+## UX Design
+
+VIPulse 2.0 was designed with a focus on clarity, usability and efficient navigation for internal VIP management and retention teams.
+
+The interface aims to make player information and retention assessments easy to access, while keeping common management tasks straightforward.
+
+### Design Approach
+
+The application's design follows several key principles:
+
+- **Clear navigation:** Authenticated users can move between the Dashboard, Players and Reviews sections.
+- **Consistent layouts:** Player and review pages use familiar cards, forms and action buttons.
+- **Visual hierarchy:** Headings, statistics and status indicators help users identify important information.
+- **Responsive design:** Layouts adapt to desktop and mobile screen sizes.
+- **Form usability:** Clearly labelled fields and validation messages support accurate data entry.
+- **Confirmation before deletion:** Users must confirm destructive actions before records are removed.
+
+Bootstrap 5 was used to support responsive layouts and consistent interface components, alongside custom CSS for the application's visual identity.
+
+### Wireframes
+
+The following wireframes illustrate the structure and layout of VIPulse 2.0 across desktop and mobile screen sizes.
+
+These wireframes were prepared as visual documentation of the completed application, rather than as original pre-development design artefacts.
+
+#### Dashboard Wireframe
+
+The dashboard layout presents key player and review statistics alongside recent VIP review activity.
+
+![Dashboard Desktop and Mobile Wireframes](docs/wireframe-dashboard.png)
+
+#### Player Management Wireframe
+
+The player management layout includes player search, VIP tier filtering, player records and management actions.
+
+![Player Management Desktop and Mobile Wireframes](docs/wireframe-players.png)
+
+#### Player Profile Wireframe
+
+The player profile layout brings together individual player details, summary information and historical reviews.
+
+![Player Profile Desktop and Mobile Wireframes](docs/wireframe-player-profile.png)
+
+#### Review Management Wireframe
+
+The review management layout provides access to recorded assessments, filtering controls and review management actions.
+
+![Review Management Desktop and Mobile Wireframes](docs/wireframe-reviews.png)
+
+#### Player Form Wireframe
+
+The player form layout supports both creating and editing player records through a consistent interface.
+
+![Player Form Desktop and Mobile Wireframes](docs/wireframe-player-form.png)
+
+#### Review Form Wireframe
+
+The review form layout supports entering and updating risk levels, retention scores, notes and recommended actions.
+
+![Review Form Desktop and Mobile Wireframes](docs/wireframe-review-form.png)
+
+#### Login Wireframe
+
+The login layout provides a simple authentication interface with clearly labelled username and password fields.
+
+![Login Desktop and Mobile Wireframes](docs/wireframe-login.png)
+
+### Colour Scheme and Typography
+
+VIPulse 2.0 uses a dark-themed interface to create a consistent visual identity across its pages.
+
+The design uses contrasting text, clearly defined content areas and visual indicators to distinguish navigation, actions and important player information.
+
+Typography and spacing are applied consistently to maintain readability and support a clear information hierarchy.
+
+The interface combines Bootstrap styling with custom CSS to provide a cohesive appearance across desktop and mobile devices.
+
+
+## UX Design
+
+VIPulse 2.0 was designed with a focus on clarity, usability and efficient navigation for internal VIP management and retention teams.
+
+The interface aims to make player information and retention assessments easy to access, while keeping common management tasks straightforward.
+
+### Design Approach
+
+The application's design follows several key principles:
+
+- **Clear navigation:** Authenticated users can move between the Dashboard, Players and Reviews sections.
+- **Consistent layouts:** Player and review pages use familiar cards, forms and action buttons.
+- **Visual hierarchy:** Headings, statistics and status indicators help users identify important information.
+- **Responsive design:** Layouts adapt to desktop and mobile screen sizes.
+- **Form usability:** Clearly labelled fields and validation messages support accurate data entry.
+- **Confirmation before deletion:** Users must confirm destructive actions before records are removed.
+
+Bootstrap 5 was used to support responsive layouts and consistent interface components, alongside custom CSS for the application's visual identity.
+
+### Wireframes
+
+The following wireframes illustrate the planned page structure, visual hierarchy and responsive layouts of VIPulse 2.0 across desktop and mobile screen sizes. 
+
+They provide a visual reference for the application's main pages and user workflows.
+
+#### Dashboard Wireframe
+
+The dashboard layout presents key player and review statistics alongside recent VIP review activity.
+
+![Dashboard Desktop and Mobile Wireframes](docs/wireframe-dashboard.png)
+
+#### Player Management Wireframe
+
+The player management layout includes player search, VIP tier filtering, player records and management actions.
+
+![Player Management Desktop and Mobile Wireframes](docs/wireframe-players.png)
+
+#### Player Profile Wireframe
+
+The player profile layout brings together individual player details, summary information and historical reviews.
+
+![Player Profile Desktop and Mobile Wireframes](docs/wireframe-player-profile.png)
+
+#### Review Management Wireframe
+
+The review management layout provides access to recorded assessments, filtering controls and review management actions.
+
+![Review Management Desktop and Mobile Wireframes](docs/wireframe-reviews.png)
+
+#### Player Form Wireframe
+
+The player form layout supports both creating and editing player records through a consistent interface.
+
+![Player Form Desktop and Mobile Wireframes](docs/wireframe-player-form.png)
+
+#### Review Form Wireframe
+
+The review form layout supports entering and updating risk levels, retention scores, notes and recommended actions.
+
+![Review Form Desktop and Mobile Wireframes](docs/wireframe-review-form.png)
+
+#### Login Wireframe
+
+The login layout provides a simple authentication interface with clearly labelled username and password fields.
+
+![Login Desktop and Mobile Wireframes](docs/wireframe-login.png)
+
+### Colour Scheme and Typography
+
+VIPulse 2.0 uses a dark-themed interface to create a consistent visual identity across its pages.
+
+The design uses contrasting text, clearly defined content areas and visual indicators to distinguish navigation, actions and important player information.
+
+Typography and spacing are applied consistently to maintain readability and support a clear information hierarchy.
+
+The interface combines Bootstrap styling with custom CSS to provide a cohesive appearance across desktop and mobile devices.
+
+## Features
+
+VIPulse 2.0 provides a collection of features designed to support VIP player management, retention assessments and day-to-day operational workflows.
+
+All player management, review management and dashboard features require authentication.
+
+### Authentication and Access Control
+
+**Related User Stories:** [US01 - User Login](https://github.com/Azhdakurt/vipulse-2/issues/1) and [US10 - User Logout](https://github.com/Azhdakurt/vipulse-2/issues/10)
+
+VIPulse 2.0 uses Django's built-in authentication system to protect internal player information.
+
+Registered staff members can log in using their username and password. Invalid credentials trigger an error message, while successful authentication allows access to the application's protected pages.
+
+Unauthenticated visitors are redirected to the login page when attempting to access protected functionality.
+
+A logout option allows staff to end their session securely. Once logged out, protected pages cannot be accessed without authenticating again.
+
+![VIPulse 2.0 Login Page](docs/feature-login.png)
+
+### Dashboard
+
+**Related User Story:** [US12 - View VIP Dashboard](https://github.com/Azhdakurt/vipulse-2/issues/12)
+
+The dashboard provides an overview of the VIP player portfolio and recorded retention assessments.
+
+It displays four key statistics:
+
+- **Total VIP Players:** The number of registered players.
+- **Total Reviews:** The number of recorded player reviews.
+- **High-Risk Players:** The number of distinct players with high-risk reviews.
+- **Average Retention Score:** The average retention score across recorded reviews.
+
+The dashboard also includes a **Recent VIP Reviews** section displaying the five most recent assessments.
+
+These statistics are generated dynamically from the database, ensuring that the information reflects the current player and review records.
+
+![VIPulse 2.0 Dashboard](docs/feature-dashboard.png)
+
+### Player Management
+
+**Related User Stories:** [US02 - View Players](https://github.com/Azhdakurt/vipulse-2/issues/2), [US03 - Add Player](https://github.com/Azhdakurt/vipulse-2/issues/3), [US04 - Edit Player](https://github.com/Azhdakurt/vipulse-2/issues/4), [US05 - Delete Player](https://github.com/Azhdakurt/vipulse-2/issues/5), [US11 - Search Players](https://github.com/Azhdakurt/vipulse-2/issues/11) and [US13 - Filter Players by VIP Tier](https://github.com/Azhdakurt/vipulse-2/issues/13)
+
+The Players page provides a central location for managing VIP player records.
+
+Each player record displays identifying information, including the Player ID, username and VIP tier.
+
+Staff members can:
+
+- View existing player records.
+- Search for players by Player ID or username.
+- Filter players by Bronze, Silver, Gold, Platinum or Diamond VIP tier.
+- Add new player records.
+- Edit existing player information.
+- Delete player records following confirmation.
+- Open an individual player's profile.
+
+Player information is retrieved dynamically from the database.
+
+![VIPulse 2.0 Player Management](docs/feature-player-management.png)
+
+#### Adding and Editing Players
+
+The player form allows staff to enter or update the following information:
+
+- Player ID
+- Username
+- VIP Tier
+
+Required fields are validated before submission, and duplicate Player IDs are rejected.
+
+When editing an existing player, the form is populated with the player's current information.
+
+After successful submission, the saved information is displayed in the player list.
+
+![VIPulse 2.0 Add Player Form](docs/feature-add-player.png)
+
+#### Deleting Players
+
+Deleting a player requires confirmation to reduce the risk of accidental data loss.
+
+Users can cancel the operation without changing the player record.
+
+Once deletion is confirmed, the player is removed from the database. Associated reviews are also deleted because the Review model uses a cascading foreign key relationship.
+
+![VIPulse 2.0 Delete Confirmation](docs/feature-delete-confirmation.png)
+
+### Player Profiles
+
+**Related User Story:** [US14 - View Individual Player Profile](https://github.com/Azhdakurt/vipulse-2/issues/14)
+
+The individual player profile provides a consolidated view of a player's information and review history.
+
+Staff members can access a profile directly from the Players page.
+
+Each profile displays:
+
+- Player ID, username and VIP tier.
+- Total number of recorded reviews.
+- Latest recorded risk level.
+- Latest retention score.
+- Previous reviews, ordered from newest to oldest.
+
+This allows staff to review a player's recorded assessments without searching through the complete review list.
+
+The profile also provides access to relevant review management actions.
+
+![VIPulse 2.0 Player Profile](docs/feature-player-profile.png)
+
+### Review Management
+
+**Related User Stories:** [US06 - Add Review](https://github.com/Azhdakurt/vipulse-2/issues/6), [US07 - View Reviews](https://github.com/Azhdakurt/vipulse-2/issues/7), [US08 - Edit Review](https://github.com/Azhdakurt/vipulse-2/issues/8) and [US09 - Delete Review](https://github.com/Azhdakurt/vipulse-2/issues/9)
+
+The Reviews page provides a centralised interface for managing VIP player assessments.
+
+Each review is linked to an existing player and records:
+
+- Risk Level
+- Retention Score
+- Notes
+- Recommended Action
+
+Staff can view, create, update and delete reviews.
+
+The page also includes filtering options to help users locate relevant assessments.
+
+**Risk Level Filter**
+
+Reviews can be filtered by Low, Medium or High risk level.
+
+**Retention Score Filter**
+
+Reviews can be filtered using the following score ranges:
+
+- Low: 0–39
+- Medium: 40–69
+- High: 70–100
+
+These filters help staff focus on specific groups of recorded assessments.
+
+![VIPulse 2.0 Review Management](docs/feature-review-management.png)
+
+#### Adding and Editing Reviews
+
+The review form allows staff to select an existing player and record their assessment.
+
+The form includes:
+
+- Player selection
+- Risk Level: Low, Medium or High
+- Retention Score: 0–100
+- Notes
+- Recommended Action
+
+Required fields are validated, and the retention score must be within the permitted range.
+
+When editing a review, the form displays the existing information so that staff can update the assessment.
+
+Successfully saved reviews are stored in the database and remain associated with the selected player.
+
+![VIPulse 2.0 Add Review Form](docs/feature-add-review.png)
+
+#### Deleting Reviews
+
+Existing reviews can be deleted after confirmation.
+
+Cancelling the confirmation leaves the review unchanged.
+
+Deleting a review removes only that assessment and does not delete the associated player record.
+
+### Forms and Validation
+
+VIPulse 2.0 uses Django ModelForms to manage player and review data.
+
+Validation helps maintain accurate and consistent records by checking:
+
+- Required form fields.
+- Unique Player IDs.
+- Valid VIP tier selections.
+- Valid risk level selections.
+- Retention scores within the 0–100 range.
+
+Validation feedback is displayed when submitted information does not meet the required conditions.
+
+The application also uses confirmation pages for destructive actions, allowing users to cancel before deleting records.
+
+Together, these features support reliable data entry and safer record management.
+
