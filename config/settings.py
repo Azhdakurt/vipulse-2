@@ -27,7 +27,7 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.environ["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = os.environ.get(
     "ALLOWED_HOSTS",
@@ -164,5 +164,5 @@ LOGOUT_REDIRECT_URL = "/accounts/login/"
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
 SECURE_SSL_REDIRECT = not DEBUG
-SECURE_SSL_REDIRECT = not DEBUG
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_HSTS_SECONDS = 300 if not DEBUG else 0
