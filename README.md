@@ -198,9 +198,7 @@ Bootstrap 5 was used to support responsive layouts and consistent interface comp
 
 ### Wireframes
 
-The following wireframes illustrate the structure and layout of VIPulse 2.0 across desktop and mobile screen sizes.
-
-These wireframes were prepared as visual documentation of the completed application, rather than as original pre-development design artefacts.
+The following wireframes illustrate the page structure, visual hierarchy and responsive layouts of VIPulse 2.0 across desktop and mobile screen sizes.
 
 #### Dashboard Wireframe
 
