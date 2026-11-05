@@ -3,9 +3,9 @@
 {% block extra_css %}
 <style>
     .vip-badge-bronze {
-        background-color: #CD7F32;
-        color: #ffffff;
-    }
+    background-color: #CD7F32;
+    color: #212529;
+}
 
     .vip-badge-silver {
         background-color: #C0C0C0;
@@ -45,8 +45,13 @@
 </div>
 
 <form method="get" action="{% url 'player_list' %}" class="d-flex flex-column flex-lg-row align-items-lg-center gap-3 mb-4">
-   <input
+   <label for="player_search" class="visually-hidden">
+    Search by username or Player ID
+</label>
+
+<input
     type="text"
+    id="player_search"
     name="q"
     class="form-control flex-grow-1"
     placeholder="Search by username or Player ID"

@@ -95,6 +95,32 @@ The deployed Heroku application was tested using a regular authenticated user ac
 | MT-10 | Open the Edit Review page from a player profile and select Cancel. | No changes are saved and the user returns to the player profile. | The user returned to the profile without saving changes. | Pass |
 | MT-11 | Delete a test review using the confirmation page. | The selected review is removed. | The review was deleted successfully. | Pass |
 
+#### Accessibility Retesting — Player Management
+
+Following assessment feedback, two accessibility improvements were implemented and retested on the Player Management page.
+
+**Player Search Field**
+
+- Added a visually hidden `<label>` associated with the search input using matching `for="player_search"` and `id="player_search"` attributes.
+- Verified the label and input association using Chrome DevTools.
+- Confirmed that the label text is present in the DOM.
+- Manually tested the search functionality and confirmed that searching by player username or Player ID continues to work.
+
+**Bronze VIP Badge Contrast**
+
+- Updated the Bronze badge text colour from `#FFFFFF` to `#212529`, retaining the existing `#CD7F32` background.
+- Calculated the updated contrast ratio using the WCAG relative luminance formula.
+- Confirmed a contrast ratio of **4.91:1**, exceeding the **4.5:1 WCAG AA** requirement for normal-sized text.
+- Verified the applied background and text colours using Chrome DevTools.
+
+**Regression Testing**
+
+The Django automated test suite was rerun after the accessibility changes.
+
+**Result:** 11 tests passed, with no failures.
+
+**Outcome:** Both accessibility issues identified during assessment have been addressed in the source code and passed the documented local checks. A fresh accessibility audit of the deployed page is still required after deployment.
+
 ### 3.4 Responsive Navigation
 
 | Test ID | Test Steps | Expected Result | Actual Result | Status |
@@ -245,7 +271,25 @@ The application uses conditional security settings for HTTPS redirection and sec
 
 The HSTS duration was configured to 300 seconds in non-debug mode.
 
-The deployment check was performed locally using production-style settings. It does not, by itself, verify every environment variable or configuration value on the deployed Heroku application.
+### 6.4 Secret Key Security Remediation
+
+Following assessment feedback, the Django `SECRET_KEY` configuration and Git history were reviewed to address the exposure of a previously hardcoded secret.
+
+**Remediation completed:**
+
+- Generated a new Django `SECRET_KEY` and updated the Heroku production environment variable.
+- Confirmed that `config/settings.py` retrieves the secret from the `SECRET_KEY` environment variable rather than storing a hardcoded value.
+- Verified that the deployed application remained functional after the production key rotation, including a successful login.
+- Used `git-filter-repo` to rewrite the repository history and remove the previously exposed secret from historical commits.
+- Verified that all 49 commits in the rewritten history were free of hardcoded `SECRET_KEY` assignments in `config/settings.py`.
+- Confirmed that the original secret value was absent from the files examined across the rewritten history.
+- Force-pushed the cleaned history to GitHub and synchronised the local `main` branch with the updated remote history.
+
+**Verification outcome:** The production secret has been rotated, the current Django configuration uses an environment variable, and the rewritten `main` branch history no longer contains the previously exposed secret.
+
+**Remaining limitation:** Some historical commits were still accessible through direct GitHub URLs after the history rewrite, despite no longer belonging to the `main` branch. GitHub-side removal of these remaining commit objects has not been completed. The previously exposed secret is no longer used in production.
+
+No secret values are included in this documentation.
 
 ### Summary
 
