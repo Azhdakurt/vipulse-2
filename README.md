@@ -252,82 +252,6 @@ Typography and spacing are applied consistently to maintain readability and supp
 
 The interface combines Bootstrap styling with custom CSS to provide a cohesive appearance across desktop and mobile devices.
 
-
-## UX Design
-
-VIPulse 2.0 was designed with a focus on clarity, usability and efficient navigation for internal VIP management and retention teams.
-
-The interface aims to make player information and retention assessments easy to access, while keeping common management tasks straightforward.
-
-### Design Approach
-
-The application's design follows several key principles:
-
-- **Clear navigation:** Authenticated users can move between the Dashboard, Players and Reviews sections.
-- **Consistent layouts:** Player and review pages use familiar cards, forms and action buttons.
-- **Visual hierarchy:** Headings, statistics and status indicators help users identify important information.
-- **Responsive design:** Layouts adapt to desktop and mobile screen sizes.
-- **Form usability:** Clearly labelled fields and validation messages support accurate data entry.
-- **Confirmation before deletion:** Users must confirm destructive actions before records are removed.
-
-Bootstrap 5 was used to support responsive layouts and consistent interface components, alongside custom CSS for the application's visual identity.
-
-### Wireframes
-
-The following wireframes illustrate the page structure, visual hierarchy and responsive layouts of VIPulse 2.0 across desktop and mobile screen sizes.
-
-#### Dashboard Wireframe
-
-The dashboard layout presents key player and review statistics alongside recent VIP review activity.
-
-![Dashboard Desktop and Mobile Wireframes](docs/wireframe-dashboard.png)
-
-#### Player Management Wireframe
-
-The player management layout includes player search, VIP tier filtering, player records and management actions.
-
-![Player Management Desktop and Mobile Wireframes](docs/wireframe-players.png)
-
-#### Player Profile Wireframe
-
-The player profile layout brings together individual player details, summary information and historical reviews.
-
-![Player Profile Desktop and Mobile Wireframes](docs/wireframe-player-profile.png)
-
-#### Review Management Wireframe
-
-The review management layout provides access to recorded assessments, filtering controls and review management actions.
-
-![Review Management Desktop and Mobile Wireframes](docs/wireframe-reviews.png)
-
-#### Player Form Wireframe
-
-The player form layout supports both creating and editing player records through a consistent interface.
-
-![Player Form Desktop and Mobile Wireframes](docs/wireframe-player-form.png)
-
-#### Review Form Wireframe
-
-The review form layout supports entering and updating risk levels, retention scores, notes and recommended actions.
-
-![Review Form Desktop and Mobile Wireframes](docs/wireframe-review-form.png)
-
-#### Login Wireframe
-
-The login layout provides a simple authentication interface with clearly labelled username and password fields.
-
-![Login Desktop and Mobile Wireframes](docs/wireframe-login.png)
-
-### Colour Scheme and Typography
-
-VIPulse 2.0 uses a dark-themed interface to create a consistent visual identity across its pages.
-
-The design uses contrasting text, clearly defined content areas and visual indicators to distinguish navigation, actions and important player information.
-
-Typography and spacing are applied consistently to maintain readability and support a clear information hierarchy.
-
-The interface combines Bootstrap styling with custom CSS to provide a cohesive appearance across desktop and mobile devices.
-
 ## Features
 
 VIPulse 2.0 provides a collection of features designed to support VIP player management, retention assessments and day-to-day operational workflows.
@@ -515,4 +439,642 @@ Validation feedback is displayed when submitted information does not meet the re
 The application also uses confirmation pages for destructive actions, allowing users to cancel before deleting records.
 
 Together, these features support reliable data entry and safer record management.
+
+## Database Design
+
+VIPulse 2.0 uses a relational database to store VIP player information and retention review records.
+
+The application uses PostgreSQL in the deployed environment and Django's Object-Relational Mapper (ORM) to interact with the database.
+
+The database structure is built around two main application models: **Player** and **Review**.
+
+These models are connected through a one-to-many relationship, allowing each player to have multiple reviews while ensuring that every review belongs to a specific player.
+
+### Entity Relationship Diagram
+
+The Entity Relationship Diagram (ERD) illustrates the database models, their fields and the relationship between them.
+
+![VIPulse 2.0 Entity Relationship Diagram](docs/erd-vipulse.png)
+
+The relationship between the models is defined as follows:
+
+- One Player can have zero, one or multiple Reviews.
+- Each Review belongs to exactly one Player.
+- The Review model uses a ForeignKey referencing the Player model.
+- The relationship uses `on_delete=models.CASCADE`, meaning that deleting a player also deletes all associated reviews.
+
+This structure allows review histories to be maintained without duplicating player information across multiple records.
+
+### Database Models
+
+#### Player Model
+
+The Player model stores the core information required to identify and manage VIP players.
+
+| Field | Django Field Type | Description |
+| --- | --- | --- |
+| id | Automatically generated primary key | Unique database identifier for each player. |
+| player_id | CharField(max_length=50) | Unique player identifier. |
+| username | CharField(max_length=100) | Player username. |
+| vip_tier | CharField(max_length=20) | VIP tier selected from predefined choices. |
+| created_at | DateTimeField(auto_now_add=True) | Date and time the player record was created. |
+
+The `player_id` field has a uniqueness constraint to prevent duplicate player identifiers.
+
+The `vip_tier` field supports five predefined choices:
+
+- Bronze
+- Silver
+- Gold
+- Platinum
+- Diamond
+
+The default VIP tier is Bronze.
+
+#### Review Model
+
+The Review model stores risk and retention assessments associated with individual players.
+
+| Field | Django Field Type | Description |
+| --- | --- | --- |
+| id | Automatically generated primary key | Unique database identifier for each review. |
+| player | ForeignKey(Player) | Links the review to an existing player. |
+| risk_level | CharField(max_length=20) | Recorded risk level: Low, Medium or High. |
+| retention_score | PositiveIntegerField | Numerical retention score, validated between 0 and 100 through the application form. |
+| notes | TextField | Written observations about the player. |
+| recommended_action | TextField | Recommended retention or follow-up action. |
+| created_at | DateTimeField(auto_now_add=True) | Date and time the review was created. |
+
+The default risk level is Low, and the default retention score is 50.
+
+The Review model uses the following relationship:
+
+```python
+player = models.ForeignKey(
+    Player,
+    on_delete=models.CASCADE,
+    related_name="reviews"
+)
+```
+
+The `related_name="reviews"` attribute allows the application to retrieve a player's associated reviews through Django's ORM.
+
+For example, the player profile page uses this relationship to display an individual player's review history.
+
+### Data Integrity and Validation
+
+The application uses Django model constraints and form validation to support consistent data entry.
+
+Key validation rules include:
+
+- Every player must have a unique Player ID.
+- VIP tiers must match the predefined model choices.
+- Every review must be associated with an existing player.
+- Risk levels must match the predefined model choices.
+- Retention scores must be within the range of 0 to 100 when submitted through the application form.
+- Required fields must be completed before records can be saved.
+
+Django's ORM manages database operations, while ModelForms provide validation and structured handling of submitted data.
+
+The database design supports the application's CRUD functionality, dashboard calculations and individual player review histories.
+
+## Technologies Used
+
+VIPulse 2.0 was developed using a combination of front-end and back-end technologies, development tools and deployment services.
+
+### Languages
+
+| Technology | Purpose |
+| --- | --- |
+| HTML5 | Provides the semantic structure of the application's pages and forms. |
+| CSS3 | Supports custom styling, responsive layouts and the application's visual identity. |
+| Python | Powers the back-end application logic, database interactions and server-side functionality. |
+| SQL | Used through Django's ORM for relational database operations. |
+
+### Frameworks and Libraries
+
+| Technology | Purpose |
+| --- | --- |
+| Django 6.1.2 | Python web framework used for routing, authentication, forms, models and CRUD operations. |
+| Bootstrap 5.3.3 | Provides responsive layouts, interface components and styling utilities. |
+| Django ORM | Manages database models, relationships, queries and migrations. |
+| Django ModelForms | Handles player and review form processing and validation. |
+| WhiteNoise | Serves static files in the deployed application. |
+
+### Database
+
+| Technology | Purpose |
+| --- | --- |
+| PostgreSQL | Relational database used in the deployed application to store player and review records. |
+| SQLite | Lightweight database used for local development and automated Django testing. |
+
+### Development and Version Control
+
+| Technology | Purpose |
+| --- | --- |
+| Visual Studio Code | Code editor used for developing and maintaining the application. |
+| Git | Tracks changes to the source code and documentation. |
+| GitHub | Hosts the source code repository and project documentation. |
+| GitHub Issues | Records user stories, acceptance criteria and development tasks. |
+| GitHub Projects | Provides the Kanban board used to track development progress. |
+| Python Virtual Environment | Isolates the project's Python dependencies. |
+
+### Deployment and Hosting
+
+| Technology | Purpose |
+| --- | --- |
+| Heroku | Hosts the deployed Django application. |
+| Gunicorn | Runs the Django application as a production WSGI server. |
+| WhiteNoise | Enables static file serving in the deployed environment. |
+
+### Testing and Validation Tools
+
+| Tool | Purpose |
+| --- | --- |
+| Django Test Framework | Runs automated tests covering application functionality. |
+| Flake8 | Checks Python code for style and quality issues. |
+| W3C HTML Validator | Checks HTML markup for validation errors and warnings. |
+| W3C CSS Validator | Checks CSS for validation issues. |
+| Google Lighthouse | Evaluates performance, accessibility, best practices and SEO. |
+| Google Chrome DevTools | Supports responsive testing and browser-based debugging. |
+| Safari | Used for cross-browser functionality testing. |
+| Mozilla Firefox | Used for cross-browser functionality testing. |
+
+Further details about automated tests, manual testing, validation and Lighthouse results are available in [TESTING.md](TESTING.md).
+
+## Testing and Validation
+
+VIPulse 2.0 was tested using a combination of automated tests, manual functional testing, code validation, accessibility checks and cross-browser testing.
+
+The testing process focused on ensuring that the application's core features function correctly, user input is validated and the interface remains usable across different devices and browsers.
+
+Full testing procedures, results, screenshots and known issues are documented in the dedicated [TESTING.md](TESTING.md) file.
+
+### Automated Testing
+
+Django's built-in testing framework was used to test application functionality.
+
+A total of **11 automated tests were executed successfully**, with all tests passing.
+
+The tests can be run locally using:
+
+```bash
+python manage.py test players -v 2
+```
+
+Django's system check also completed without reported issues:
+
+```bash
+python manage.py check
+```
+
+### Manual Functional Testing
+
+Manual testing covered the application's main user workflows, including:
+
+- Authentication and logout.
+- Dashboard access and statistics.
+- Creating, viewing, editing and deleting players.
+- Searching and filtering player records.
+- Viewing individual player profiles and review histories.
+- Creating, viewing, editing and deleting reviews.
+- Filtering reviews by risk level and retention score.
+- Form validation and deletion confirmation.
+- Navigation and access restrictions.
+
+A total of **28 manual functional test cases** were documented.
+
+Detailed test steps, expected results and actual outcomes are available in [TESTING.md](TESTING.md).
+
+### HTML and CSS Validation
+
+HTML and CSS validation was performed using the W3C validation tools.
+
+Eleven application pages were checked for HTML validity, with no reported errors or warnings.
+
+The application's custom CSS files were also validated, with results documented in the testing report.
+
+### Python Code Quality
+
+Flake8 was used to check the application's Python code for style and formatting issues.
+
+The following command completed successfully:
+
+```bash
+python -m flake8 players config --exclude=migrations --max-line-length=88
+```
+
+A Django deployment check was also performed using:
+
+```bash
+DEBUG=False python manage.py check --deploy
+```
+
+Two HSTS-related security warnings were identified concerning subdomain inclusion and preload settings. These were documented in the testing report in the context of the application's Heroku-provided domain.
+
+### Google Lighthouse Testing
+
+Google Lighthouse was used to assess performance, accessibility, best practices and SEO.
+
+A total of **22 Lighthouse audits** were completed across 11 application pages, covering both desktop and mobile views.
+
+Typical results included:
+
+| Category | Mobile | Desktop |
+| --- | --- | --- |
+| Performance | 98 | 100 |
+| Accessibility | 100 | 100 |
+| Best Practices | 100 | 100 |
+| SEO | 90 | 90 |
+
+Some pages received different results, including an accessibility score of 95 on the Player Management page.
+
+Full page-by-page Lighthouse results and screenshots are provided in [TESTING.md](TESTING.md).
+
+### Responsive and Cross-Browser Testing
+
+The application was tested at desktop and mobile screen sizes to assess layout behaviour, navigation and form usability.
+
+Cross-browser testing was also performed using:
+
+- Google Chrome
+- Safari
+- Mozilla Firefox
+
+Responsive and browser compatibility testing results, including supporting screenshots, are documented in [TESTING.md](TESTING.md).
+
+### Test Results and Known Issues
+
+The automated tests passed, and the main application workflows were verified through manual testing.
+
+A small number of outstanding issues and validation observations were recorded rather than omitted from the documentation.
+
+These are described in the [Bugs and Known Issues](#bugs-and-known-issues) section and in the full [TESTING.md](TESTING.md) report.
+
+## Deployment
+
+VIPulse 2.0 is deployed on Heroku and uses PostgreSQL as its production database.
+
+The application is configured to use environment variables for sensitive settings, Gunicorn as its production WSGI server and WhiteNoise for serving static files.
+
+- **Live Application:** [VIPulse 2.0](https://vipulse-2-27dcf5edfa12.herokuapp.com/)
+- **Source Code:** [GitHub Repository](https://github.com/Azhdakurt/vipulse-2)
+
+### Local Deployment
+
+The following instructions explain how to clone and run VIPulse 2.0 locally.
+
+#### Prerequisites
+
+Before starting, ensure that the following are installed:
+
+- Python 3.12
+- Git
+- pip
+- A code editor, such as Visual Studio Code
+
+#### 1. Clone the Repository
+
+Open a terminal and run:
+
+```bash
+git clone https://github.com/Azhdakurt/vipulse-2.git
+cd vipulse-2
+```
+
+#### 2. Create a Virtual Environment
+
+Create a Python virtual environment:
+
+```bash
+python3 -m venv .venv
+```
+
+Activate the environment.
+
+On macOS or Linux:
+
+```bash
+source .venv/bin/activate
+```
+
+On Windows:
+
+```bash
+.venv\Scripts\activate
+```
+
+#### 3. Install Dependencies
+
+Install the project's required Python packages:
+
+```bash
+pip install -r requirements.txt
+```
+
+The requirements include Django, Gunicorn, WhiteNoise, psycopg, dj-database-url and python-dotenv.
+
+#### 4. Configure Environment Variables
+
+The application requires a Django secret key.
+
+For local development, set the following environment variables.
+
+On macOS or Linux:
+
+```bash
+export SECRET_KEY="replace-with-a-secure-generated-secret-key"
+export DEBUG=True
+export ALLOWED_HOSTS="127.0.0.1,localhost"
+```
+
+The application also supports a `DATABASE_URL` environment variable.
+
+When `DATABASE_URL` is not provided, the Django settings use a local SQLite database by default.
+
+**Important:** Never commit actual secret keys, passwords or database credentials to the GitHub repository.
+
+#### 5. Apply Database Migrations
+
+Create the required database tables:
+
+```bash
+python manage.py migrate
+```
+
+#### 6. Create a Staff Account
+
+Create a local administrator account:
+
+```bash
+python manage.py createsuperuser
+```
+
+Follow the terminal prompts to enter a username, email address and password.
+
+This account can be used to access the application locally.
+
+#### 7. Start the Development Server
+
+Run:
+
+```bash
+python manage.py runserver
+```
+
+Open the application in your browser:
+
+http://127.0.0.1:8000/
+
+Log in using the account created in the previous step.
+
+### Heroku Deployment
+
+VIPulse 2.0 is hosted on Heroku using a production configuration suitable for a Django application.
+
+The deployment uses:
+
+- **Heroku:** Application hosting.
+- **PostgreSQL:** Production database.
+- **Gunicorn:** Production WSGI server.
+- **WhiteNoise:** Static file serving.
+- **Environment variables:** Configuration and secret management.
+
+#### 1. Create a Heroku Application
+
+Sign in to [Heroku](https://www.heroku.com/) and create a new application.
+
+Choose an available application name and deployment region.
+
+#### 2. Configure the Database
+
+Provision a Heroku Postgres database for the application.
+
+Heroku provides the database connection information through the `DATABASE_URL` configuration variable.
+
+The application uses `dj-database-url` to interpret the connection string and configure Django's database connection.
+
+The relevant configuration in `config/settings.py` is:
+
+```python
+DATABASES = {
+    "default": dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
+}
+```
+
+This allows the application to use PostgreSQL when a production `DATABASE_URL` is available, while retaining SQLite as the local fallback.
+
+#### 3. Configure Environment Variables
+
+In the Heroku application's **Settings → Config Vars** section, configure the required variables.
+
+| Variable | Purpose |
+| --- | --- |
+| `SECRET_KEY` | Secure Django secret key used in production. |
+| `DEBUG` | Set to `False` for production. |
+| `ALLOWED_HOSTS` | Comma-separated list of permitted hostnames, including the deployed Heroku hostname. |
+| `DATABASE_URL` | PostgreSQL connection string, normally provided by the Heroku Postgres add-on. |
+
+Production secrets must be stored in Heroku Config Vars rather than committed to the repository.
+
+#### 4. Configure the Production Server
+
+The repository includes a `Procfile` containing:
+
+```text
+web: gunicorn config.wsgi
+```
+
+This instructs Heroku to start the Django application using Gunicorn.
+
+The repository also includes a `.python-version` file specifying Python 3.12.
+
+#### 5. Configure Static Files
+
+VIPulse 2.0 uses WhiteNoise to serve static files in production.
+
+The Django settings include:
+
+```python
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+```
+
+Static files can be collected using:
+
+```bash
+python manage.py collectstatic --noinput
+```
+
+This prepares the application's static assets for production serving.
+
+#### 6. Deploy the Application
+
+The source code is maintained in the GitHub repository.
+
+Heroku supports deployment through a connected GitHub repository or through the Heroku CLI.
+
+For GitHub-based deployment:
+
+1. Open the Heroku application's **Deploy** tab.
+2. Select **GitHub** as the deployment method.
+3. Connect the GitHub account and select the `vipulse-2` repository.
+4. Choose the `main` branch.
+5. Deploy the selected branch.
+
+#### 7. Apply Production Migrations
+
+After deployment, run the database migrations using the Heroku CLI:
+
+```bash
+heroku run python manage.py migrate --app YOUR_HEROKU_APP_NAME
+```
+
+Replace `YOUR_HEROKU_APP_NAME` with the actual Heroku application name.
+
+#### 8. Create an Administrator Account
+
+If an administrator account is required, create one using:
+
+```bash
+heroku run python manage.py createsuperuser --app YOUR_HEROKU_APP_NAME
+```
+
+Follow the prompts to create the account.
+
+Public user registration is not available in VIPulse 2.0. Accounts are created through administrative processes.
+
+#### 9. Verify the Deployment
+
+After deployment:
+
+- Open the live application.
+- Confirm that the login page loads.
+- Log in using a valid account.
+- Verify access to the Dashboard, Players and Reviews pages.
+- Confirm that database-backed functionality works correctly.
+- Check that CSS and other static assets load successfully.
+
+The deployed application is available at:
+
+[https://vipulse-2-27dcf5edfa12.herokuapp.com/](https://vipulse-2-27dcf5edfa12.herokuapp.com/)
+
+### Security Considerations
+
+The application includes several production-oriented security settings:
+
+- `DEBUG` defaults to `False`.
+- `SECRET_KEY` is loaded from an environment variable.
+- `ALLOWED_HOSTS` restricts accepted hostnames.
+- Secure session and CSRF cookies are enabled when debug mode is disabled.
+- HTTPS redirection is enabled when debug mode is disabled.
+- Django authentication protects internal application pages.
+
+Additional deployment security checks and their results are documented in [TESTING.md](TESTING.md).
+
+## Bugs and Known Issues
+
+During development and testing, issues were identified, investigated and documented to support the reliability and usability of VIPulse 2.0.
+
+The main application workflows are functional, and all 11 automated Django tests passed. However, some minor issues and validation observations remain.
+
+### Known Issues
+
+#### 1. VIP Tier Filter Empty-State Message
+
+When a VIP tier is selected and no players match the chosen filter, the Players page displays the general empty-state message:
+
+"No players have been added yet."
+
+This message is more appropriate when the database contains no player records, rather than when a filter returns no matching results.
+
+**Status:** Known issue — not yet resolved.
+
+**Impact:** The filtering functionality works, but the message may be misleading.
+
+#### 2. Player Management Accessibility Score
+
+Google Lighthouse reported an accessibility score of 95 for the Player Management page in both desktop and mobile testing.
+
+**Status:** Further accessibility improvements may be required.
+
+**Impact:** The page remains functional, but the Lighthouse assessment indicates an opportunity for improvement.
+
+#### 3. Lighthouse SEO Scores
+
+Lighthouse SEO assessments returned scores of 90 on the tested pages.
+
+**Status:** Further SEO improvements have not been implemented.
+
+**Impact:** This does not prevent the application from functioning. As VIPulse 2.0 is an authentication-protected internal application, public search engine visibility is not a primary project objective.
+
+### Resolved Issues
+
+Issues identified and corrected during development were retested to verify that the affected functionality worked as expected.
+
+The detailed record of bugs, fixes, validation observations and supporting evidence is available in [TESTING.md](TESTING.md).
+
+### Testing Documentation
+
+For full information about testing procedures, results and outstanding issues, see:
+
+[View the Complete Testing Report](TESTING.md)
+
+## Credits and Acknowledgements
+
+VIPulse 2.0 was developed as part of the Code Institute Level 5 Web Applications Development programme.
+
+### Learning and Development Resources
+
+The following resources supported the development of the application:
+
+- [Code Institute](https://codeinstitute.net/) — Course materials and guidance on web application development, Python, Django and project documentation.
+- [Django Documentation](https://docs.djangoproject.com/) — Reference for models, views, URL routing, authentication, forms and database management.
+- [Python Documentation](https://docs.python.org/3/) — Reference for Python language features and development practices.
+- [Bootstrap Documentation](https://getbootstrap.com/docs/5.3/) — Reference for responsive layouts, components and styling.
+- [MDN Web Docs](https://developer.mozilla.org/) — Reference for HTML, CSS, accessibility and web development standards.
+
+### Development and Testing Tools
+
+- [GitHub](https://github.com/) — Source control, issue tracking and Agile project management.
+- [Heroku](https://www.heroku.com/) — Hosting and deployment.
+- [Google Lighthouse](https://developer.chrome.com/docs/lighthouse/) — Performance, accessibility, best practices and SEO auditing.
+- [W3C Markup Validation Service](https://validator.w3.org/) — HTML validation.
+- [W3C CSS Validation Service](https://jigsaw.w3.org/css-validator/) — CSS validation.
+- [Flake8](https://flake8.pycqa.org/) — Python code quality checks.
+
+### Acknowledgements
+
+I would like to acknowledge Code Institute for providing the learning framework and resources that supported the development of this project.
+
+VIPulse 2.0 was also informed by my professional experience in customer support, VIP management and player retention operations, which helped shape the application's purpose, workflows and functionality.
+
+## AI Assistance
+
+AI-assisted tools, including OpenAI's ChatGPT, were used during the development of VIPulse 2.0 as supporting resources for learning, problem-solving and documentation.
+
+AI assistance was used in the following areas:
+
+- **Planning and project organisation:** Discussing development priorities, implementation steps and documentation structure.
+- **Code development and debugging:** Explaining Django concepts, reviewing code examples, investigating errors and suggesting possible solutions.
+- **Testing and validation:** Supporting the organisation of test cases, interpretation of validation results and documentation of testing outcomes.
+- **User experience and design:** Discussing responsive layouts, interface improvements and the presentation of project features.
+- **Documentation:** Assisting with the structure, wording and clarity of the README and TESTING documentation.
+- **Visual assets:** Supporting the creation of illustrative project visuals, including wireframes and the database relationship diagram.
+
+AI-generated suggestions and outputs were reviewed and adapted to the requirements of the project.
+
+The application's functionality was implemented, tested and verified through the development process. Final decisions regarding features, design, code integration and project scope remained my responsibility.
+
+AI assistance was used as a development and learning aid rather than as a replacement for understanding the application's implementation.
 
