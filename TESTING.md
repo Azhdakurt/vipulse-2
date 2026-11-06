@@ -86,15 +86,6 @@ The deployed Heroku application was tested using a regular authenticated user ac
 | MT-06 | Open a player profile without any reviews. | Review-related information displays an appropriate empty state. | The profile displayed N/A for unavailable review information. | Pass |
 | MT-07 | Open a player profile containing multiple reviews. | The latest review is identified correctly and reviews appear in descending date order. | The latest review information was displayed and the newest review appeared first. | Pass |
 
-### 3.3 Review Management
-
-| Test ID | Test Steps | Expected Result | Actual Result | Status |
-|---|---|---|---|---|
-| MT-08 | Create a review for an existing player. | The review is saved and associated with the selected player. | The review was created successfully. | Pass |
-| MT-09 | Edit a review from a player's profile and save the changes. | The changes are saved and the user returns to the player profile. | The review was updated and the user returned to the profile. | Pass |
-| MT-10 | Open the Edit Review page from a player profile and select Cancel. | No changes are saved and the user returns to the player profile. | The user returned to the profile without saving changes. | Pass |
-| MT-11 | Delete a test review using the confirmation page. | The selected review is removed. | The review was deleted successfully. | Pass |
-
 #### Accessibility Retesting — Player Management
 
 Following assessment feedback, two accessibility improvements were implemented and retested on the Player Management page.
@@ -130,6 +121,16 @@ The Lighthouse audit reported no automatically detected accessibility issues. Ma
 **Lighthouse Accessibility Evidence — Deployed Application**
 
 ![Player Management Lighthouse Accessibility Score — 100/100](docs/lighthouse-accessibility-player-management-desktop.png)
+
+### 3.3 Review Management
+
+| Test ID | Test Steps | Expected Result | Actual Result | Status |
+|---|---|---|---|---|
+| MT-08 | Create a review for an existing player. | The review is saved and associated with the selected player. | The review was created successfully. | Pass |
+| MT-09 | Edit a review from a player's profile and save the changes. | The changes are saved and the user returns to the player profile. | The review was updated and the user returned to the profile. | Pass |
+| MT-10 | Open the Edit Review page from a player profile and select Cancel. | No changes are saved and the user returns to the player profile. | The user returned to the profile without saving changes. | Pass |
+| MT-11 | Delete a test review using the confirmation page. | The selected review is removed. | The review was deleted successfully. | Pass |
+
 
 ### 3.4 Responsive Navigation
 
