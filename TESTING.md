@@ -119,7 +119,17 @@ The Django automated test suite was rerun after the accessibility changes.
 
 **Result:** 11 tests passed, with no failures.
 
-**Outcome:** Both accessibility issues identified during assessment have been addressed in the source code and passed the documented local checks. A fresh accessibility audit of the deployed page is still required after deployment.
+**Outcome:** Both accessibility issues identified during assessment have been addressed in the source code and passed the documented local checks. Following deployment of the accessibility fixes to Heroku, the live Player Management page was retested using Google Chrome Lighthouse (Desktop, Navigation mode).
+
+**Result: Accessibility score of 100/100.**
+
+The player search functionality was also manually tested on the deployed application and confirmed to work correctly. The updated Bronze VIP badge was visually verified on the live page.
+
+The Lighthouse audit reported no automatically detected accessibility issues. Manual accessibility checks remain important because automated audits do not cover every accessibility requirement.
+
+**Lighthouse Accessibility Evidence — Deployed Application**
+
+![Player Management Lighthouse Accessibility Score — 100/100](docs/lighthouse-accessibility-player-management-desktop.png)
 
 ### 3.4 Responsive Navigation
 
